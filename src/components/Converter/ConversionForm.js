@@ -172,52 +172,6 @@ class ConversionsForm extends Component {
   }
 
   render() {
-
-    // let alert;
-
-    // if(this.state.formdataValid) {
-    //   alert = (
-    //     <CustomAlert
-    //       variant="warning"
-    //       class="alert__absolute"
-    //       title={this.state.convertedCurrency + ' ' + defaultCurrency}
-    //     />
-    //   );
-    // }
-    //  else if(!this.state.formdata.amount.validation.valid && this.state.formdata.amount.validation.validationMessage) {
-    //   alert = (
-    //     <CustomAlert
-    //       variant="danger"
-    //       class="alert__absolute"
-    //       title={this.state.formdata.amount.validation.validationMessage}
-    //     />
-    //   );
-    // } else if(!this.state.formdata.currency.validation.valid && this.state.formdata.currency.validation.validationMessage) {
-    //   alert = (
-    //     <CustomAlert
-    //       variant="danger"
-    //       class="alert__absolute"
-    //       title={this.state.formdata.currency.validation.validationMessage}
-    //     />
-    //   );
-    // } else if(!this.state.formdataValid && this.state.formError) {
-    //   alert = (
-    //     <CustomAlert
-    //       variant="danger"
-    //       class="alert__absolute"
-    //       title="Something went wrong with API"
-    //     />
-    //   );
-    // } else if(this.state.formdataValid && this.state.formSuccess) {
-    //   alert = (
-    //     <CustomAlert
-    //       variant="success"
-    //       class="alert__absolute"
-    //       title="Conversion successfully saved"
-    //     />
-    //   );
-    // }
-
     return (
       <Form onSubmit={this.onSubmit}>
         {this.state.formdataValid && (
