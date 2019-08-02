@@ -1,0 +1,10 @@
+header {
+  a {
+    color: #fff;
+    transition: opacity 250ms ease;
+    &:hover {
+      color: #fff;
+      opacity: .6;
+    }
+  }
+}
