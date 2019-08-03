@@ -29,7 +29,7 @@ const ConversionList = ({ conversions }) => {
   if(conversions.length > 0) {
     
     sum = conversions.reduce(function (accumulator, currentValue) {
-      return parseFloat(accumulator) + parseFloat(currentValue.value);
+      return parseFloat(accumulator) + parseFloat(currentValue.convertedValue);
     }, 0);
 
     sum = sum.toFixed(2);

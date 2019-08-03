@@ -20,13 +20,13 @@ const CustomTable = (props) => {
             <span className="font-weight-bold">
               {tableRowItem.value}
             </span>&nbsp;
-            {tableRowItem.valueCurrency}
+            {tableRowItem.convertedValueCurrency}
           </td>
           <td>
             <span className="font-weight-bold">
               {tableRowItem.convertedValue}
             </span>&nbsp;
-            {tableRowItem.convertedValueCurrency}
+            {tableRowItem.valueCurrency}
           </td>
         </tr>
       ))} 
