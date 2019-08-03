@@ -7,7 +7,9 @@
   &__absolute {
     position: absolute;
     top: -24px;
+    height: 42px;
     padding: 9px;
+    z-index: 1;
   }
   &__notify {
     position: fixed;
