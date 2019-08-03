@@ -10,7 +10,6 @@ const Select = (props) => {
         name={props.formdata.name}
         value={props.formdata.value}
         onChange={props.onChange}
-        isInvalid={!props.valid}
       >
         <option value="">Select {props.formdata.name}</option>
         {

@@ -44,7 +44,7 @@ class ConversionsForm extends Component {
           validation: {
             required: true,
             number: true,
-            valid: true
+            valid: false
           }
         },
         currency: {
@@ -68,7 +68,7 @@ class ConversionsForm extends Component {
           },
           validation: {
             required: true,
-            valid: true
+            valid: false
           }
         }
       },
@@ -154,7 +154,12 @@ class ConversionsForm extends Component {
       .catch(e => {
         this.setState({
           formdataValid: false
-        })
+        });
+
+        const messageType = 'warning';
+        const message = 'Could not connect to conversion API service';
+
+        this.props.notifyUser({ messageType, message });
       })
     } else {
       this.setState({
@@ -177,12 +182,10 @@ class ConversionsForm extends Component {
           formdata={this.state.formdata.amount.config}
           inputRight={defaultCurrencySymbol}
           onChange={this.onChange}
-          valid={this.state.formdata.amount.validation.valid}
         />
         <Select
           formdata={this.state.formdata.currency.config}
           onChange={this.onChange}
-          valid={this.state.formdata.currency.validation.valid}
         />
         <CustomButton
           type="submit"
