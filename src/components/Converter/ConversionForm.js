@@ -4,7 +4,7 @@ import axios from 'axios';
 
 // custom components
 import Select from '../Select';
-import CustomInputGroup from '../Input/CustomInputGroup';
+import CustomInput from '../Input/CustomInput';
 import CustomButton from '../Button/CustomButton';
 import CustomAlert from '../Alert/CustomAlert';
 
@@ -13,7 +13,7 @@ import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner'
 
 // constants
-import { defaultCurrency, defaultCurrencySymbol } from '../../constants/others';
+import { defaultCurrency } from '../../constants/others';
 
 // helpers
 import { validation } from '../../helpers/validation';
@@ -151,7 +151,7 @@ class ConversionsForm extends Component {
       let amount = res.data.rates[defaultCurrency];
 
       this.setState({
-        convertedCurrency: (this.state.formdata.amount.config.value / amount).toFixed(2),
+        convertedCurrency: (this.state.formdata.amount.config.value * amount).toFixed(2),
         loadingConversion: false
       });
 
@@ -179,12 +179,11 @@ class ConversionsForm extends Component {
           <CustomAlert
             variant="warning"
             class="alert__absolute"
-            title={!this.state.loadingConversion ? `${this.state.convertedCurrency} ${defaultCurrency}` : ''}
+            title={!this.state.loadingConversion ? `conversion: ${this.state.convertedCurrency} ${defaultCurrency}` : ''}
           />
         )}
-        <CustomInputGroup
+        <CustomInput
           formdata={this.state.formdata.amount.config}
-          inputRight={defaultCurrencySymbol}
           onChange={this.onChange}
         />
         <Select
@@ -193,7 +192,7 @@ class ConversionsForm extends Component {
         />
         <CustomButton
           type="submit"
-          value="Save conversion"
+          value={`Save conversion to ${defaultCurrency}`}
           variant="success"
           onChange={this.onChange}
           class="w-100"
