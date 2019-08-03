@@ -7,7 +7,7 @@ const NotFound = () => {
   return (
     <Layout>
       <Fade>
-        <Card>
+        <Card className="notfound">
           <Card.Body className="text-center">
             <Card.Title className="mb-4">
               <h1>404</h1>
