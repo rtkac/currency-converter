@@ -10,6 +10,7 @@ import CustomAlert from '../Alert/CustomAlert';
 
 // react-bootstrap
 import Form from 'react-bootstrap/Form';
+import Spinner from 'react-bootstrap/Spinner'
 
 // constants
 import { defaultCurrency, defaultCurrencySymbol } from '../../constants/others';
@@ -73,7 +74,8 @@ class ConversionsForm extends Component {
         }
       },
       convertedCurrency: '',
-      formdataValid: false
+      formdataValid: false,
+      loadingConversion: false
     }
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -123,7 +125,7 @@ class ConversionsForm extends Component {
   onSubmit(event) {
     event.preventDefault();
 
-    const value = this.state.formdata.amount.config.value;
+    const value = parseFloat(this.state.formdata.amount.config.value).toFixed(2);
     const valueCurrency = defaultCurrency;
     const convertedValue = this.state.convertedCurrency;
     const convertedValueCurrency = this.state.formdata.currency.config.value.toUpperCase();
@@ -137,45 +139,47 @@ class ConversionsForm extends Component {
   }
 
   getConversion() {
-    if(this.state.formdataValid) {
-      axios.get('https://api.exchangeratesapi.io/latest', {
-        params: {
-          base: this.state.formdata.currency.config.value.toUpperCase()
-        }
-      })
-      .then(res => {
-        let amount = res.data.rates[defaultCurrency];
+    this.setState({
+      loadingConversion: true
+    });
+    axios.get('https://api.exchangeratesapi.io/latest', {
+      params: {
+        base: this.state.formdata.currency.config.value.toUpperCase()
+      }
+    })
+    .then(res => {
+      let amount = res.data.rates[defaultCurrency];
 
-        this.setState({
-          convertedCurrency: (this.state.formdata.amount.config.value / amount).toFixed(2)
-        });
-
-      })
-      .catch(e => {
-        this.setState({
-          formdataValid: false
-        });
-
-        const messageType = 'warning';
-        const message = 'Could not connect to conversion API service';
-
-        this.props.notifyUser({ messageType, message });
-      })
-    } else {
       this.setState({
-        convertedCurrency: ''
-      })
-    }
+        convertedCurrency: (this.state.formdata.amount.config.value / amount).toFixed(2),
+        loadingConversion: false
+      });
+
+    })
+    .catch(e => {
+      this.setState({
+        formdataValid: false,
+        loadingConversion: false
+      });
+
+      const messageType = 'warning';
+      const message = 'Could not connect to conversion API service';
+
+      this.props.notifyUser({ messageType, message });
+    })
   }
 
   render() {
     return (
       <Form onSubmit={this.onSubmit}>
+        {this.state.loadingConversion && (
+          <Spinner animation="grow" />
+        )}
         {this.state.formdataValid && (
           <CustomAlert
             variant="warning"
             class="alert__absolute"
-            title={`${this.state.convertedCurrency} ${defaultCurrency}`}
+            title={!this.state.loadingConversion ? `${this.state.convertedCurrency} ${defaultCurrency}` : ''}
           />
         )}
         <CustomInputGroup
@@ -193,7 +197,7 @@ class ConversionsForm extends Component {
           variant="success"
           onChange={this.onChange}
           class="w-100"
-          disabled={this.state.formdataValid ? false : true}
+          disabled={!this.state.loadingConversion && this.state.formdataValid ? false : true}
         />
       </Form>
     )

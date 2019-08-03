@@ -24,18 +24,22 @@ const table = {
 
 const ConversionList = ({ conversions }) => {
 
+  let sum = 0;
+
   if(conversions.length > 0) {
     
-    var sum = conversions.reduce(function (accumulator, currentValue) {
-      return parseFloat(accumulator) + parseFloat(currentValue.value) + ` ${defaultCurrency}`;
+    sum = conversions.reduce(function (accumulator, currentValue) {
+      return parseFloat(accumulator) + parseFloat(currentValue.value);
     }, 0);
+
+    sum = sum.toFixed(2);
 
     return (
       <Fade>
         <CustomTable
           tableHead={table.tableHead}
           tableRows={conversions}
-          tableFoot={sum}
+          tableFoot={`${sum} ${defaultCurrency}`}
         />
       </Fade>
     )
