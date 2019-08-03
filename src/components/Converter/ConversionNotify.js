@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import CustomAlert from '../Alert/CustomAlert';
 
 // redux
@@ -47,6 +48,10 @@ class NotifyAlert extends Component {
   }
 }
 
-const NotifyComponent = connect(mapStateToProps)(NotifyAlert);
+NotifyAlert.propTypes = {
+  notify: PropTypes.object
+}
 
-export default NotifyComponent;
+const ConversionNotify = connect(mapStateToProps)(NotifyAlert);
+
+export default ConversionNotify;

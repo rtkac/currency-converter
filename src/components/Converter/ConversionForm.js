@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 // custom components
 import Select from '../Select';
@@ -21,7 +22,7 @@ import { connect } from 'react-redux';
 import { addConversion } from '../../actions/conversionActions';
 import { notifyUser } from '../../actions/notifyActions';
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
   return {
     addConversion: conversions => dispatch(addConversion(conversions)),
     notifyUser: notify => dispatch(notifyUser(notify))
@@ -43,8 +44,7 @@ class ConversionsForm extends Component {
           validation: {
             required: true,
             number: true,
-            valid: false,
-            validationMessage: ''
+            valid: true
           }
         },
         currency: {
@@ -68,25 +68,17 @@ class ConversionsForm extends Component {
           },
           validation: {
             required: true,
-            valid: false,
-            validationMessage: ''
+            valid: true
           }
         }
       },
       convertedCurrency: '',
-      formdataValid: false,
-      formError: false,
-      formSuccess: false
+      formdataValid: false
     }
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
   }
-
-  // componentDidMount() {
-  //   // reset alert
-  //   this.props.notifyUser(null, null)
-  // }
 
   onChange(event) {
     const newFormdata = this.state.formdata;
@@ -142,28 +134,28 @@ class ConversionsForm extends Component {
     const message = 'Conversion added successfully';
 
     this.props.notifyUser({ messageType, message });
-    
-    this.setState({formSuccess: true})
   }
 
   getConversion() {
     if(this.state.formdataValid) {
-      fetch(`https://api.exchangeratesapi.io/latest?base=${this.state.formdata.currency.config.value.toUpperCase()}`)
-        .then(res => res.json())
-        .then(data => {
-          let amount = data.rates[defaultCurrency];
+      axios.get('https://api.exchangeratesapi.io/latest', {
+        params: {
+          base: this.state.formdata.currency.config.value.toUpperCase()
+        }
+      })
+      .then(res => {
+        let amount = res.data.rates[defaultCurrency];
 
-          this.setState({
-            convertedCurrency: (this.state.formdata.amount.config.value / amount).toFixed(2)
-          });
+        this.setState({
+          convertedCurrency: (this.state.formdata.amount.config.value / amount).toFixed(2)
+        });
 
+      })
+      .catch(e => {
+        this.setState({
+          formdataValid: false
         })
-        .catch(e => {
-          this.setState({
-            formdataValid: false,
-            formError: true
-          })
-        })
+      })
     } else {
       this.setState({
         convertedCurrency: ''
@@ -178,17 +170,19 @@ class ConversionsForm extends Component {
           <CustomAlert
             variant="warning"
             class="alert__absolute"
-            title={this.state.convertedCurrency + ' ' + defaultCurrency}
+            title={`${this.state.convertedCurrency} ${defaultCurrency}`}
           />
         )}
         <CustomInputGroup
           formdata={this.state.formdata.amount.config}
           inputRight={defaultCurrencySymbol}
           onChange={this.onChange}
+          valid={this.state.formdata.amount.validation.valid}
         />
         <Select
           formdata={this.state.formdata.currency.config}
           onChange={this.onChange}
+          valid={this.state.formdata.currency.validation.valid}
         />
         <CustomButton
           type="submit"
@@ -205,7 +199,9 @@ class ConversionsForm extends Component {
 
 ConversionsForm.propTypes = {
   addConversion: PropTypes.func.isRequired,
-  notifyUser: PropTypes.func.isRequired
+  notifyUser: PropTypes.func.isRequired,
+  defaultCurrency: PropTypes.string,
+  defaultCurrencySymbol: PropTypes.string
 }
 
 export default connect(null, mapDispatchToProps)(ConversionsForm);

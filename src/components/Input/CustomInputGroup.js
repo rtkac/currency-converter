@@ -15,6 +15,7 @@ const CustomInputGroup = (props) => {
           onChange={props.onChange}
           aria-label={props.formdata.name}
           aria-describedby={props.formdata.name}
+          isInvalid={!props.valid}
         />
         <InputGroup.Append>
           <InputGroup.Text id={props.formdata.name}>{props.inputRight}</InputGroup.Text>

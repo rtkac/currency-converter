@@ -31,12 +31,14 @@ const CustomTable = (props) => {
         </tr>
       ))} 
       </tbody>
-      <tfoot>
-        <tr>
-          <td>sum</td>
-          <td>{ props.tableFoot }</td>
-        </tr>
-      </tfoot>
+      {props.tableFoot && (
+        <tfoot>
+          <tr>
+            <td>sum</td>
+            <td>{ props.tableFoot }</td>
+          </tr>
+        </tfoot>
+      )}
     </Table>
   )
 }

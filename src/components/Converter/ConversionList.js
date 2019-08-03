@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Fade from 'react-reveal/Fade';
 
 // constants
@@ -43,6 +44,11 @@ const ConversionList = ({ conversions }) => {
       <p className="text-center">No conversions</p>
     )
   }
+}
+
+ConversionList.propTypes = {
+  conversions: PropTypes.array,
+  defaultCurrency: PropTypes.string
 }
 
 const List = connect(mapStateToProps)(ConversionList);

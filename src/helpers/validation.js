@@ -1,3 +1,5 @@
+import { numRegex } from '../constants/others';
+
 export const validation = (element) => {
 
   let value = element.config.value;
@@ -7,7 +9,7 @@ export const validation = (element) => {
   let error = [true, errorMessage];
 
   if(element.validation.number) {
-    let valid = value.match(/^[0-9]+$/) === null;
+    let valid = value.match(numRegex) === null;
     errorMessage = `${name} must be a number`;
     error = valid ? [!valid, errorMessage] : error;
   } else if(element.validation.required) {
