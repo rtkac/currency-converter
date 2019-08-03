@@ -2,6 +2,7 @@
   "name": "currency-converter",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://currency-conv.netlify.com/",
   "dependencies": {
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
@@ -19,6 +20,7 @@
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "deploy": "npm run build && mv build/index.html build/200.html",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
